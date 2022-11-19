@@ -1,0 +1,79 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/forms.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+   <%- include('../includes/navigation.ejs') %>
+
+    <main>
+        <% if (errorMessage) { %>
+            <div class="user-message user-message--error"><%= errorMessage %></div>
+        <% } %>
+
+        <!--enctype="application/x-www-form-urlencoded"  is default. We will use enctype="multipart/form-data" which  telling the server that
+
+this submission, that this request will not contain plaintext but will contain mixed data, text and binary
+
+data  -->
+
+        <!--multer, the package we just installed will be looking for incoming requests
+
+with this type of data and will then be able to parse both the text and our file.-->
+
+        <!--tại sao từ /admin/edit-product/6376451ceb3d065a008850c8?edit=true rồi nhảy tới /admin/edit-product sau khi sửa thông tin form??? Đáng lẽ phải tới trang /admin/products để xem kết quả đã sửa-->
+        <!-- <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data"></form> -->
+        <form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" enctype="multipart/form-data"> <!--morgan cho biết POST /admin/products 404 nếu action="/admin/products"-->
+            <div class="form-control">
+                <label for="title">Title của sản phẩm %> <% if(editing){ %> <%=product2._id %> <% } %></label>
+                <input 
+                   class="<%= validationErrors.find(e=>e.param==='title')?'invalid':''  %>" 
+                   type="text" 
+                   name="title" 
+                   id="title" 
+                   value="<% if (editing || hasError) { %> <%= product2.title %>    <% } %>"
+                >            
+            </div>
+
+            <div class="form-control">
+                <label for="image">Image</label>
+                <input 
+                    type="file" 
+                    name="image" 
+                    id="image" 
+                >
+                <!--but for now I'll simply set up my file input LIKE THIS-->
+                <!--LATER we tweat the backend logic so that when we're editing this and we're not sending a new file, we simply keep the old one and we overwrite the old one if we do send a new one-->
+            </div>
+
+
+            <div class="form-control">
+                <label for="price">Price</label>
+                <input 
+                    class="<%= validationErrors.find(e=>e.param==='price')?'invalid':''  %>" 
+                    type="number" 
+                    name="price" 
+                    id="price" 
+                    step="0.01" 
+                    value="<% if (editing || hasError) { %><%= product2.price %><% } %>"
+                >
+            </div>
+            <div class="form-control">
+                <label for="description">Description</label>
+                <textarea 
+                    class="<%= validationErrors.find(e=>e.param==='description')?'invalid':''  %>" 
+                    name="description" 
+                    id="description" 
+                    rows="5"><% if (editing  || hasError) { %><%= product2.description %><% } %>
+                </textarea>
+            </div>
+
+            <% if (editing) { %>
+                <input type="hidden" value="<%= product2._id %>" name="productId">
+            <% } %>
+
+           
+            <button class="btn" type="submit"><% if (editing) { %>Update Product<% } else { %>Add Product<% } %></button>
+        </form>
+    </main>
+<%- include('../includes/end.ejs') %>

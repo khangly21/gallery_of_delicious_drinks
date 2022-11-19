@@ -1,0 +1,64 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/product.css">
+    </head>
+
+    <body>
+        <%- include('../includes/navigation.ejs') %>
+
+            <main>
+                <!--check xem mảng có rỗng hay không, nếu có thì thông báo không có SP nào-->
+                <% if (products.length > 0) { %>
+                    <div class="grid">
+                        <% for (let product of products) { %>
+                            <article class="card product-item">
+                                <header class="card__header">
+                                    <h1 style="color:aquamarine" class="product__title">
+                                        <%= product.title %>
+                                    </h1>
+                                </header>
+                                <div class="card__image">
+                                    <!--src không phải static url, mà là absolute path tới folder định sẵn-->
+                                    <img src="/admin/images/<%= product.imageFilename %>" alt="<%= product.title %>"> <!--src không xác định thì hiện title-->
+                                    
+                                    <!--vì sao link dưới đây không hiển thị?-->
+                                    <!-- <img src="https://2.bp.blogspot.com/-3ggE1E-RR_Q/UoNmB1ldhVI/AAAAAAAABAo/2_gAcvLsKlk/s1600/Best+Vector+of+Christmas+With+Hourse+Year+2014.jpg" alt="Girl in a jacket" width="500" height="600"> -->
+                                    
+                                </div>
+                                <div class="card__content">
+                                    <h2 class="product__price"> VND
+                                        <%= product.price %>
+                                    </h2>
+                                    <p class="product__description" style="background-image: url('../../bg_grass.PNG')">
+                                        <%= product.description %>
+                                    </p>
+                                </div>
+                                <div class="card__actions">
+                                    <a href="/admin/edit-product/<%= product._id %>?edit=true" class="btn">Edit</a>
+                                   
+
+                                    <!--Using (), we execute that function when we click on many "Delete" button-->
+                                    <!--This is a special keyword (tùy vào ngữ cảnh thì this ám chỉ cái gì đó) and in the context here, it will refer to the element on which we clicked-->
+                                    <!--tương ứng trong public/js/admin.js, định nghĩa hàm arrow function với tham số là (btn)-->
+                                    <!--hàm deleteProduct nằm trong public >> js >> admin.js-->
+                                    <!--button class="btn" type="button" onclick="deleteProduct(this)">Delete product information</button--> <!-- khi thêm client side JS code vào public >> js >> tạo file admin.js thì DOM delete không là type="submit" mà type "button"-->
+                                
+                                    <!--như đã dùng methodOverride, nên có thể thực hiện xóa file với form, method="POST" action="/?_method=DELETE"-->
+                                    <!--trước hết cần tạo API bên app.js để delete file mà action của form gọi tới-->
+                                    <form method="POST" action="/admin/images/<%= product.imageFilename %>?_method=DELETE">
+                                        <!--PROB: nếu product._id là không tìm ra ảnh để xóa, vì đó là id của product -->
+                                        <button class="btn btn-danger btn-block mt-4">Delete</button>
+                                    </form>
+                                </div>
+                            </article> <!--DOM article sẽ bị xóa sau khi SP bị xóa và gửi thông báo bằng json data-->
+                        <% } %>
+                    </div>
+                    <% } else { %>
+                        <h1>No Products Found!</h1>
+                    <% } %>
+            </main>
+            <%- include('../includes/end.ejs') %>
+
+            <!--server js/admin.js static bên trog thư mục public-->
+            <script src="/js/admin.js"></script> <!--if we load it at the end of this file, we make
+ execute our javascript code admin.js, make sure that the entire dom has been rendered and parsed by the time we-->
+                

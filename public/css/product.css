@@ -1,0 +1,31 @@
+.product-form {
+    width: 20rem;
+    max-width: 90%;
+    margin: auto;
+    display: block;
+}
+
+.product-item {
+    width: 20rem;
+    max-width: 95%;
+    margin: 1rem;
+}
+
+.product__title {
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.product__price {
+    text-align: center;
+    color: #4d4d4d;
+    margin-bottom: 0.5rem;
+}
+
+/*https://stackoverflow.com/questions/43996209/why-cant-i-set-a-background-image*/
+.product__description {
+    text-align: center;
+    /*problem là text overflow ra ngoài chiều ngang màn hình, phải dùng word-wrap hoặc word-break có tác dụng như nhau*/
+    word-break: break-word;
+    background-image: url('../../bg_grass.PNG'); 
+}

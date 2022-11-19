@@ -1,0 +1,45 @@
+<section class="pagination">
+    <!--sau ? chính là query parameter "page"-->
+    <!--here I would set a query parameter "page" to value one or respectively, to value two.-->
+    
+    <!--có anchor tags, tác giả gọi là buttons-->
+    <!--2 thực thể này cứ hiện ở view index.ejs dù có query parameter "page" hay không-->
+    <% if(currentPage != 1 && previousPage !=1){ %>  
+        <!--currentPage !== 1 sẽ false, vì so sánh string và number, phải là !=-->
+        <!--Expected: page=1 kiểu number thì if(false) không hiện 1-->
+        <!--THực tế, page=1 vẫn hiện 1, lý do là string!==1 thì if(true) nên hiển thị.🔑 Chìa khóa là currentPage là một string-->
+        <!--🍒Solution 1 (if(currentPage != 1) aka if("1" != 1) aka if(false) 👉 hiển thị page=1 với 3 nút 1(active) 11 20): Không so kiểu, chỉ so giá trị, thấy đang ở tráng 1 thì if(false) -->
+        <!--🍒Solution 2 (dùng Number(chuỗi) ,  if(Number(currentPage) !== 1) aka if(Number("1") !== 1) aka if(false) sẽ 👉 hiển thị page=1 với 3 nút 1(active) 11 20 )){ %>  Không thể so sánh vì NaN !== 1 , https://stackoverflow.com/questions/67243475/syntax-error-unexpected-token-catch-while-compiling-ejs-->
+        <!--nói chung, Solution 1 và Solution 2 sẽ ra kết quả như nhau-->
+            <!--thật ra lỗi Syntax Error : Unexpected Token Catch While Compiling EJS là do trong comment có EJS tag, VD chỉ cần ghi EJS opening tag thôi thì sẽ Error: Could not find matching close tag for it-->
+            <!--https://www.w3schools.com/jsref/jsref_number.asp-->
+            <!--For strings, Number() returns a number or NaN, If the value cannot be converted to a number, NaN is returned. If no value is provided, 0 is returned.-->
+        <a href="?page=1">1</a> 
+    <% } %>  <!--💢 Problem là: page=3 thì hiển thị ok 1 2 3 4 21 , page=4 thì hiển thị LỖI 1 3 4 5 21-->
+             <!--page=2 thì hiển thị ok, 1 2 3 21 với nextPage và tầm nhìn tới lastPage, muốn tới page4 phải nhảy tới page3 trước tiên-->
+             <!--nghĩa là page=4 chỉ quan tâm chuỗi previous gần nhất, không tính các previous xa hơn, nhưng ok vì từ 4 sẽ biết previousPage và tầm nhìn tới firstPage, muốn tới page2 thì tới lân cận là page1 hay page3-->
+    
+    <!--express renders the previous page-->
+    <% if( hasPreviousPage ) { %>
+        <a href="?page=<%=previousPage %>"><%=previousPage %></a> 
+    <% } %> 
+
+    <!--Phải hiển thị theo thứ tự: previous page trước currentPage-->
+    <a href="?page=<%=currentPage %>" class="active"><%=currentPage %></a> <!--where to defined the class active? main.css-->
+    
+    <!--express renders the next page-->
+    <% if( hasNextPage ) { %>
+        <a href="?page=<%=nextPage %>"><%=nextPage %></a> 
+    <% } %>
+
+    <!--express renders the last page-->
+    <% if( lastPage !== currentPage && nextPage !== lastPage ) { %>
+        <a href="?page=<%=lastPage %>"><%=lastPage %></a> 
+    <% } %>
+
+    <!-- .pagination a.active{
+       background:#00695c;
+       color:white; }
+    -->
+    <!--this is hardcoded (static), trong 10.20 sẽ dynamic generated-->
+</section>

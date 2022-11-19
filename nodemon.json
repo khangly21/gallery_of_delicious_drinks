@@ -1,0 +1,9 @@
+{
+    "env":{
+        "MONGO_USER":"lyvietkhang_admin",
+        "MONGO_PASSWORD":"FLC0EfhTqJHonvsI",
+        
+        "MONGO_DEFAULT_DATABASE":"healthyproducts"
+        
+    }
+}

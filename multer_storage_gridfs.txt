@@ -1,0 +1,7 @@
+* Python
+   ** https://youtu.be/mZE3aBdr010
+   ** Title: How to use GridFS to work with files in MongoDB 
+   
+* npm documentation 
+   ** https://www.npmjs.com/package/multer-storage-gridfs
+   ** https://www.mongodb.com/docs/manual/core/gridfs/
